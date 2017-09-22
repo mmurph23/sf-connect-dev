@@ -16,68 +16,72 @@ let CreateCase =  ({ dispatchCaseCreate, fields: {SuppliedName, WebSite, Supplie
          onSubmit={handleSubmit(dispatchCaseCreate)}>
       <div>
         <label>Full Name</label>
-        <div>
+        <div className="form-group">
           <Field
             name="SuppliedName"
             component="input"
             type="text"
             placeholder="Full Name"
+            className="form-control"
             {...SuppliedName}
           />
         </div>
       </div>
       <div>
         <label>DDC Website URL</label>
-        <div>
+        <div className="form-group">
           <Field
             name="WebSite"
             component="input"
             type="text"
             placeholder="www.example.com"
+            className="form-control"
             {...WebSite}
           />
         </div>
       </div>
       <div>
         <label>Email</label>
-        <div>
+        <div className="form-group">
           <Field
             name="SuppliedEmail"
             component="input"
             type="email"
             placeholder="Email"
+            className="form-control"
             {...SuppliedEmail}
           />
         </div>
       </div>
       <div>
         <label>Subject</label>
-        <div>
+        <div className="form-group">
           <Field
             name="Subject"
             component="input"
             type="text"
             placeholder="Test from CLI #7"
+            className="form-control"
             {...Subject}
           />
         </div>
       </div>
       <div>
         <label>Description</label>
-        <div>
-          <Field name="Description" component="textarea" {...Description}/>
+        <div className="form-group">
+          <Field name="Description" component="textarea" className="form-control" {...Description}/>
         </div>
       </div>
       <div>
-        <button type="submit" disabled={pristine || submitting}>
+        <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>
           Submit
         </button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
+        &nbsp;
+        <button type="button" className="btn btn-seconday" disabled={pristine || submitting} onClick={reset}>
+          Reset
         </button>
       </div>
      </Form>
-
 );
 //connect to react redux with no mapStateToProps, and pass dispatchCaseCreate as a prop. Then, wrap component in reduxForm
 export default connect(null, {dispatchCaseCreate})(reduxForm({

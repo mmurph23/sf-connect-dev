@@ -6,6 +6,8 @@ import $ from 'jquery';
 import { bindActionCreators } from 'redux'
 import CreateCase from '../CreateCase'
 
+
+
 import { fetchAccounts } from '../../reducers/stateReducer.js';
 
 const login = () => {
@@ -15,29 +17,38 @@ const login = () => {
 const Home = (props) => (
 
        <div>
+            
+            <div className="jumbotron">
+              <h1 class="display-3">Welcome!</h1>
+              <p className="lead">Please log in with your Salesforce account:</p>
+              <p className="lead">
+                <button onClick={props.login} className="btn btn-lg btn-primary">
+                  Log in
+                </button>
+              </p>
+            </div>
+            <button onClick={props.fetchAccounts} className="btn btn-lg btn-primary">
+              Get Accounts
+            </button>
+          <div className="container">
+            <div className="row">
+              <div className="col col-lg-6">
+                <div className="actsWrap">
+                     <div className="acts">
+                        <h1>Here are some accounts</h1>
 
-           <div className="slds-box slds-theme--shade">
-             <p className="slds-text-heading--medium slds-m-bottom--medium">Welcome, please log in with your Salesforce account:</p>
-             <div className="slds-align--absolute-center">
-               <button onClick={props.login} className="slds-button slds-button--brand">
-                 Log in
-               </button>
-               <button onClick={props.fetchAccounts} className="slds-button slds-button--brand">
-                 Get Accounts
-               </button>
-             </div>
-           </div>
-          <div className="actsWrap">
-               <div className="acts">
-                  <h1>Here's some accounts</h1>
-
-                  { props.accounts ? props.accounts.map(account =>
-                    <div>{account.Id} - {account.Name}</div>
-                  ) : <p>No accounts coming through yet.</p>}
+                        { props.accounts ? props.accounts.map(account =>
+                          <div>{account.Id} - {account.Name}</div>
+                        ) : <p>No accounts coming through yet.</p>}
+                      </div>
                 </div>
-          </div>
-          <div className="caseFormWrap">
-               <CreateCase />
+                </div>
+                <div className="col col-lg-6">
+                  <div className="caseFormWrap">
+                       <CreateCase />
+                  </div>
+                </div>
+            </div>
           </div>
      </div>
 );
