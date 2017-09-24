@@ -7,7 +7,7 @@ import configureStore from './store/configure-store';
 
 
 const store = configureStore({
-  STATE: {},
+  STATE: {loggedIn: 0},
 });
 
 

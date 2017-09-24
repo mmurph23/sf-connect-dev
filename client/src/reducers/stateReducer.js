@@ -3,21 +3,22 @@ import {getValues} from 'redux-form';
 //Action creator
 const INITIAL_STATE = "INITIAL_STATE";
 const CREATE_CASE = "CREATE_CASE";
-
-const url = '/api/createCase';
+const LOGGED_IN = "LOGGED_IN";
 
 //Reducer Action
+export const loggedIn = () => ({type:LOGGED_IN})
 export const loadAccounts = (accounts) => ({type: INITIAL_STATE, payload: accounts})
 export const sendCaseInfo = (caseNum) => ({type: CREATE_CASE, payload: caseNum})
 
 //helper functions
 
-//actually get the accounts
+//get a list of accounts for the loadAccounts action
 export const getAccounts = () => {
      return fetch('/api/accounts', {credentials: "include"})
                .then(res => res.json())
 }
 
+//create a new case
 export const createCase = (request) => {
      var body = JSON.stringify(request);
      console.log('This is the payload from createCase ' + body);
@@ -26,14 +27,28 @@ export const createCase = (request) => {
 }
 
 
-//Action creator function, links the fetch call to the the reducer action, which calls the reducer
-export const fetchAccounts = () => {
+
+
+//Action dispatch function, links the fetch call to the the reducer action, which calls the reducer
+
+//increment number of times logged in
+export const login = () => {
+          window.location = '/auth/login';
+     return (dispatch) => {
+          loggedIn()
+     }
+}
+
+//dispatch loadAccounts
+export const dispatchFetchAccounts = () => {
      return (dispatch) => {
           getAccounts()
           .then(accounts => dispatch(loadAccounts(accounts)))
      }
 }
 
+
+//dispatch sendCaseInfo
 export const dispatchCaseCreate = (payload) => {
 
      console.log(payload);
@@ -69,13 +84,14 @@ export const dispatchCaseCreate = (payload) => {
 
 //Reducer
 export default (state = [], action) => {
-  let newState = [];
 
   switch (action.type) {
     case INITIAL_STATE:
       return {...state, accounts: action.payload}
     case CREATE_CASE:
       return {...state, caseNum: action.payload}
+    case LOGGED_IN:
+      return {...state, loggedIn: state.loggedIn += 1 }
     default:
       return state;
   }

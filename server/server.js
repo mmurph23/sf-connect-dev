@@ -61,7 +61,8 @@ app.get('/token', function(req, res) {
         req.session.instanceUrl = conn.instanceUrl;
         req.session.refreshToken = conn.refreshToken;
 
-        res.redirect('http://localhost:3000');
+        var string = encodeURIComponent('true');
+        res.redirect('http://localhost:3000/?valid=' + string);
     });
 });
 
@@ -97,6 +98,48 @@ app.get('/api/accounts', function(req, res) {
          console.error(err);
        })
        .run({ autoFetch : true, maxFetch : 4000 });
+});
+
+app.get('/api/casesByAccount', function(req, res) {
+
+    // if auth has not been set, redirect to index
+    if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+
+    //SOQL query
+    let q = "SELECT Name, Id, (SELECT Id, AccountId, CaseNumber FROM Cases) FROM Account WHERE Id IN (SELECT AccountId FROM Case)";
+
+    //instantiate connection
+    let conn = new jsforce.Connection({
+        oauth2 : {oauth2},
+        accessToken: req.session.accessToken,
+        instanceUrl: req.session.instanceUrl
+   });
+
+   //set records array
+    let records = [];
+    let query = conn.query(q)
+       .on("record", function(record) {
+         records.push(record);
+       })
+       .on("end", function() {
+         console.log("total in database : " + query.totalSize);
+         console.log("total fetched : " + query.totalFetched);
+         res.json(records);
+       })
+       .on("error", function(err) {
+         console.error(err);
+       })
+       .run({ autoFetch : true, maxFetch : 4000 });
+});
+
+//get account info for selected case
+app.get('/api/getAccountInfo', function(req, res){
+
+});
+
+//get case info for selected case
+app.get('/api/getCaseInfo', function(req, res){
+
 });
 
 
@@ -151,6 +194,10 @@ app.post('/api/createCase', function(req, res) {
             .then(result => {recs.push(result); recs.map(rec => {console.log(rec.id); return res.json(rec.id)});});
 });
 
+//update a case
+app.post('/api/updateCase', function(req, res) {
+     //jsforce function update(records, optionsopt, callbackopt)
+});
 
 // Always return the main index.html, so react-router render the route in the client
 /*app.get('*', (req, res) => {

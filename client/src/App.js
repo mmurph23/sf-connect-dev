@@ -26,6 +26,7 @@ class Layout extends Component {
   }
 
   render() {
+       
     return (
       <div className="container">
         <div className="navbar navbar-inverse">
@@ -38,7 +39,7 @@ class Layout extends Component {
 
           </ul>
         </div>
-        <div>
+        <div className="main-container">
           {this.props.children}
         </div>
       </div>

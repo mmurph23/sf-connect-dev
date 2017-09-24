@@ -14,6 +14,7 @@ let CreateCase =  ({ dispatchCaseCreate, fields: {SuppliedName, WebSite, Supplie
     <Form
          className="createCase-form"
          onSubmit={handleSubmit(dispatchCaseCreate)}>
+      <legend>Create A Case</legend>
       <div>
         <label>Full Name</label>
         <div className="form-group">
