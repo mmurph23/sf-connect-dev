@@ -12,7 +12,7 @@ span.sf-blue { color: #3196ef; }
 .navbar-inverse { padding-right: 20px; }
 .col-sm-2.left-container, .col-sm-2.right-container { height: 100vh; background-color: #eee; padding-top: 30px; }
 .navbar.navbar-inverse { margin-bottom: 0px; }
-.col-sm-2.left-container { padding-left: 20px; }
+.col-sm-2.left-container { padding-left: 28px; }
 .col-sm-2.right-container { padding-right: 20px; }
 
 @media (min-width: 768px) {
