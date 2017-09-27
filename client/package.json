@@ -30,6 +30,9 @@
     },
     "/api/casesByAccount": {
       "target": "http://localhost:3030"
+    },
+    "/api/accountInfo": {
+      "target": "http://localhost:3030"
     }
   },
   "devDependencies": {

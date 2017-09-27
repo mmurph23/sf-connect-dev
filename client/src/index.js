@@ -8,7 +8,8 @@ import configureStore from './store/configure-store';
 
 const store = configureStore({
   STATE: {loggedIn: 0},
-  CASES: {}
+  CASES: {},
+  ACCOUNTS: {}
 });
 
 
