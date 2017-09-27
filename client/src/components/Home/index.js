@@ -24,6 +24,7 @@ const Home = (props) => (
                  {props.location.search != '?valid=true' ? <div className="col-sm-2"></div> :
                  <div className="col-sm-2 left-container">
                       <CasesByAccount />
+                           
                  </div>}
 
 

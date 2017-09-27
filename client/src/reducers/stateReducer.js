@@ -4,11 +4,13 @@ import {getValues} from 'redux-form';
 const INITIAL_STATE = "INITIAL_STATE";
 const CREATE_CASE = "CREATE_CASE";
 const LOGGED_IN = "LOGGED_IN";
+const SELECTED_ACCOUNT = "SELECTED_ACCOUNT";
 
 //Reducer Action
 export const loggedIn = () => ({type:LOGGED_IN})
 export const loadAccounts = (accounts) => ({type: INITIAL_STATE, payload: accounts})
 export const sendCaseInfo = (caseNum) => ({type: CREATE_CASE, payload: caseNum})
+export const updateSelectedAccount = (accountId) => ({type: SELECTED_ACCOUNT, payload: accountId})
 
 //helper functions
 
@@ -36,6 +38,13 @@ export const login = () => {
           window.location = '/auth/login';
      return (dispatch) => {
           loggedIn()
+     }
+}
+
+//dispatch selectedAccount
+export const dispatchSelectedAccount = (payload) => {
+     return(dispatch) => {
+          dispatch(updateSelectedAccount(payload))
      }
 }
 
@@ -92,6 +101,8 @@ export default (state = [], action) => {
       return {...state, caseNum: action.payload}
     case LOGGED_IN:
       return {...state, loggedIn: state.loggedIn += 1 }
+    case SELECTED_ACCOUNT:
+      return {...state, selectedAccount: action.payload}
     default:
       return state;
   }

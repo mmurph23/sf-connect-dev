@@ -3,11 +3,12 @@ import {getValues} from 'redux-form';
 //Action creator
 const CASES_BY_ACCOUNT = "CASES_BY_ACCOUNT";
 const CURRENT_CASE_INFO = "CURRENT_CASE_INFO";
+const SELECTED_CASE = "SELECTED_CASE";
 
 //Reducer Action
 export const loadCasesByAccount = (casesByAccount) => ({type: CASES_BY_ACCOUNT, payload: casesByAccount});
 export const loadSelectedCase = (caseInfo) => ({type: CURRENT_CASE_INFO, payload: caseInfo});
-
+export const updateSelectedCase = (caseId) => ({type: SELECTED_CASE, payload: caseId});
 //helper functions
 
 //get a list of accounts for the loadAccounts action
@@ -23,6 +24,12 @@ export const fetchCaseInfo = () => {
 }
 
 //Action dispatch function, links the fetch call to the the reducer action, which calls the reducer
+//dispatch update selected case
+export const dispatchSelectedCase = (payload) => {
+     return(dispatch) => {
+          dispatch(updateSelectedCase(payload))
+     }
+}
 
 //dispatch loadCasesByAccount
 export const dispatchFetchCasesByAccount = () => {
@@ -33,12 +40,12 @@ export const dispatchFetchCasesByAccount = () => {
 }
 
 //dispatch loadSelectedCase
-export const dispatchSelectedCase = () => {
+/*export const dispatchSelectedCase = () => {
      return (dispatch) => {
           fetchCaseInfo()
                .then(caseInfo => dispatch(loadSelectedCase(caseInfo)))
      }
-}
+}*/
 
 //Reducer
 export default (state = [], action) => {
@@ -48,6 +55,8 @@ export default (state = [], action) => {
       return {...state, casesByAccount: action.payload}
     case CURRENT_CASE_INFO:
       return {...state, currentCaseInfo: action.payload}
+    case SELECTED_CASE:
+      return {...state, selectedCase: action.payload}
     default:
       return state;
   }

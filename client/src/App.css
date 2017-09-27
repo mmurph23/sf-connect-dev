@@ -6,11 +6,10 @@
 span.sf-blue { color: #3196ef; }
 .container { width: 100%; padding: 0px; }
 .jumbotron.login {margin-top: 40px;}
-.main-container { padding-bottom: 100px; }
 .main-container .container .row { margin: 0px; }
 .container.central-container { padding-top: 40px; }
 .navbar-inverse { padding-right: 20px; }
-.col-sm-2.left-container, .col-sm-2.right-container { height: 100vh; background-color: #eee; padding-top: 30px; }
+.col-sm-2.left-container, .col-sm-2.right-container { min-height: 100vh; background-color: #eee; padding-top: 30px; height: auto; padding-bottom:40px; }
 .navbar.navbar-inverse { margin-bottom: 0px; }
 .col-sm-2.left-container { padding-left: 28px; }
 .col-sm-2.right-container { padding-right: 20px; }

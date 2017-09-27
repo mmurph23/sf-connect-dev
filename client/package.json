@@ -19,8 +19,20 @@
     "eject": "react-scripts eject"
   },
   "proxy": {
-       "/auth/login": { "target": "http://localhost:3030" },
-       "/api/accounts": { "target": "http://localhost:3030" },
-       "/api/createCase": { "target": "http://localhost:3030" }
+    "/auth/login": {
+      "target": "http://localhost:3030"
+    },
+    "/api/accounts": {
+      "target": "http://localhost:3030"
+    },
+    "/api/createCase": {
+      "target": "http://localhost:3030"
+    },
+    "/api/casesByAccount": {
+      "target": "http://localhost:3030"
+    }
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.2"
   }
 }

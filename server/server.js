@@ -67,6 +67,10 @@ app.get('/token', function(req, res) {
 });
 
 
+app.get('/api/toExtension', function(req, res){
+
+});
+
 //get a list of accounts.
 app.get('/api/accounts', function(req, res) {
 
