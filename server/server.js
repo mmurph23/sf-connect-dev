@@ -71,38 +71,7 @@ app.get('/api/toExtension', function(req, res){
 
 });
 
-app.get('/api/accountInfo', function(req, res){
 
-
-     // if auth has not been set, redirect to index
-    if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
-
-    //SOQL query
-    let q = "SELECT Name FROM Account WHERE Id = '0014100000DEWfkAAH'";
-
-    //instantiate connection
-    let conn = new jsforce.Connection({
-        oauth2 : {oauth2},
-        accessToken: req.session.accessToken,
-        instanceUrl: req.session.instanceUrl
-   });
-
-   //set records array
-    let records = [];
-    let query = conn.query(q)
-       .on("record", function(record) {
-         records.push(record);
-       })
-       .on("end", function() {
-         console.log("total in database : " + query.totalSize);
-         console.log("total fetched : " + query.totalFetched);
-         res.json(records);
-       })
-       .on("error", function(err) {
-         console.error(err);
-       })
-       .run({ autoFetch : true, maxFetch : 4000 });
-});
 
 //get a list of accounts.
 app.get('/api/accounts', function(req, res) {
@@ -176,7 +145,21 @@ app.get('/api/getAccountInfo', function(req, res){
 
 //get case info for selected case
 app.get('/api/getCaseInfo', function(req, res){
+     if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
 
+    //instantiate connection
+    let conn = new jsforce.Connection({
+        oauth2 : {oauth2},
+        accessToken: req.session.accessToken,
+        instanceUrl: req.session.instanceUrl
+   });
+
+   var c = conn.sobject("Case").retrieve("500410000011nue", function(err, account) {
+       if (err) { return console.error(err); }
+       console.log("Name : " + account.Name);
+       // ...
+     });
+     console.log(c);
 });
 
 
@@ -231,9 +214,79 @@ app.post('/api/createCase', function(req, res) {
             .then(result => {recs.push(result); recs.map(rec => {console.log(rec.id); return res.json(rec.id)});});
 });
 
+app.post('/api/accountInfo', function(req, res){
+
+
+     // if auth has not been set, redirect to index
+    if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+
+    //instantiate connection
+    let conn = new jsforce.Connection({
+        oauth2 : {oauth2},
+        accessToken: req.session.accessToken,
+        instanceUrl: req.session.instanceUrl
+   });
+
+   let p = req.body;
+   //assign site URL to variable
+   let selectedAccount = p.selectedAccount;
+   //parse request body to create case object for SF
+   //set records array
+   let recs = [];
+   //set placeholder variable
+   let x = '';
+   //create query to return account Id
+   let q = "SELECT Name FROM Account WHERE Id =  '" + selectedAccount + "'";
+
+   //set records array
+    let records = [];
+    let query = conn.query(q)
+       .on("record", function(record) {
+         records.push(record);
+       })
+       .on("end", function() {
+         console.log("total in database : " + query.totalSize);
+         console.log("total fetched : " + query.totalFetched);
+         res.json(records);
+       })
+       .on("error", function(err) {
+         console.error(err);
+       })
+       .run({ autoFetch : true, maxFetch : 4000 });
+});
+
 //update a case
 app.post('/api/updateCase', function(req, res) {
      //jsforce function update(records, optionsopt, callbackopt)
+     // if auth has not been set, redirect to index
+     if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+
+
+     let conn = new jsforce.Connection({
+         oauth2 : {oauth2},
+         accessToken: req.session.accessToken,
+         instanceUrl: req.session.instanceUrl
+       });
+
+   //assign request body
+   let p = req.body;
+   //assign site URL to variable
+   let website = p.WebSite;
+   //parse request body to create case object for SF
+   let payload = {
+         AccountId: p.AccountId,
+         Origin: 'Web',
+         Subject: p.Subject,
+         Description: p.Description,
+         SuppliedName: p.SuppliedName,
+         SuppliedEmail: p.SuppliedEmail
+   }
+   //set records array
+   let recs = [];
+   //set placeholder variable
+   let x = '';
+   //create query to return account Id
+   let q = "SELECT Id FROM Account WHERE WebSite = '" + website + "'";
 });
 
 // Always return the main index.html, so react-router render the route in the client

@@ -5,27 +5,31 @@ import { bindActionCreators } from 'redux';
 import { dispatchSelectedAccountInfo } from '../../reducers/accountsReducer';
 
 
-const AccountInfo = (props) => (
+
+const AccountInfo = (props, sendCase) => (
+
          <div className="row">
               <div className="col-sm-8">
                    <h1>
                     Account Info
                    </h1>
                    <button onClick={props.dispatchSelectedAccountInfo} className="btn btn-lg btn-primary">
-                    Dispatch sum shit
+                    Get Account Info
                    </button>
                </div>
          </div>
 
 );
 
-
+const mapStateToProps = state => ({
+  selectedAccount: state.STATE.selectedAccount
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
      dispatchSelectedAccountInfo
 }, dispatch);
 
 export default connect(
-     null,
+     mapStateToProps,
      mapDispatchToProps
 )(AccountInfo);

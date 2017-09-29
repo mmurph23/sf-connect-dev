@@ -13,7 +13,7 @@ const CaseListItem = (props) => (
                <a href="#"
                   key={props.csId}
                   id={props.aId}
-                  onClick={props.dispatchSelectedCase(props.csId)}> {props.csNum} </a>
+                  onClick={props.dispatchSelectedCase}> {props.csNum} </a>
           </li>
 );
 

@@ -33,6 +33,9 @@
     },
     "/api/accountInfo": {
       "target": "http://localhost:3030"
+    },
+    "/api/getCaseInfo": {
+      "target": "http://localhost:3030"
     }
   },
   "devDependencies": {

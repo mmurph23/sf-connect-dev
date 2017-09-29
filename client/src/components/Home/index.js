@@ -5,6 +5,7 @@ import {browserHistory} from 'react-router';
 import $ from 'jquery';
 import { bindActionCreators } from 'redux'
 import CreateCase from '../CreateCase'
+import EditCase from '../EditCase'
 import AccountInfo from '../AccountInfo'
 import CasesByAccount from '../CasesByAccount'
 import UpdateCase from '../UpdateCase'
@@ -24,7 +25,7 @@ const Home = (props) => (
                  {props.location.search != '?valid=true' ? <div className="col-sm-2"></div> :
                  <div className="col-sm-2 left-container">
                       <CasesByAccount />
-                           
+
                  </div>}
 
 
@@ -42,22 +43,10 @@ const Home = (props) => (
 
                <div className="container central-container">
                     <div className="row">
-                         {/*<div className="col col-sm-6">
-                              <div className="actsWrap">
-                                    <div className="acts">
-                                         <button onClick={props.dispatchFetchAccounts} className="btn btn-lg btn-primary">
-                                          Get Accounts
-                                        </button>
-                                       { props.accounts ? props.accounts.map(account =>
-                                         <div>{account.Id} - {account.Name}</div>
-                                       ) : <p>No accounts coming through yet.</p>}
-                                     </div>
-                               </div>
-                         </div>*/}
                          <div className="col col-sm-1 center-left"></div>
                          <div className="col col-sm-10 center">
                             <div className="caseFormWrap">
-                                <CreateCase />
+                                {props.selectedCase ? <EditCase /> : <CreateCase />}
                               </div>
                          </div>
                          <div className="col col-sm-1 center-left"></div>
@@ -75,7 +64,8 @@ const Home = (props) => (
 
 const mapStateToProps = state => ({
   accounts: state.STATE.accounts,
-  loggedIn: state.STATE.loggedIn
+  loggedIn: state.STATE.loggedIn,
+  selectedCase: state.CASES.selectedCase
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
