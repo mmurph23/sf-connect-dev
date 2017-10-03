@@ -55,7 +55,15 @@ const Home = (props) => (
           </div>
           {props.location.search != '?valid=true' ? <div className="col-sm-2"></div> :
           <div className="col-sm-2 right-container">
-               <AccountInfo />
+               {props.selectedAccount ? <AccountInfo /> :
+                    <div className="row">
+                       <div className="col-sm-8">
+                             <h1>
+                              Account Info
+                             </h1>
+                       </div>
+                    </div>}
+
           </div>}
           </div>
      </div>
@@ -65,7 +73,8 @@ const Home = (props) => (
 const mapStateToProps = state => ({
   accounts: state.STATE.accounts,
   loggedIn: state.STATE.loggedIn,
-  selectedCase: state.CASES.selectedCase
+  selectedCase: state.CASES.selectedCase,
+  selectedAccount: state.ACCOUNTS.selectedAccount
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

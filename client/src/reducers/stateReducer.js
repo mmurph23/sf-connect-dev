@@ -4,13 +4,11 @@ import {getValues} from 'redux-form';
 const INITIAL_STATE = "INITIAL_STATE";
 const CREATE_CASE = "CREATE_CASE";
 const LOGGED_IN = "LOGGED_IN";
-const SELECTED_ACCOUNT = "SELECTED_ACCOUNT";
 
 //Reducer Action
 export const loggedIn = () => ({type:LOGGED_IN})
 export const loadAccounts = (accounts) => ({type: INITIAL_STATE, payload: accounts})
 export const sendCaseInfo = (caseNum) => ({type: CREATE_CASE, payload: caseNum})
-export const updateSelectedAccount = (accountId) => ({type: SELECTED_ACCOUNT, payload: accountId})
 
 //helper functions
 
@@ -41,12 +39,6 @@ export const login = () => {
      }
 }
 
-//dispatch selectedAccount
-export const dispatchSelectedAccount = (payload) => {
-     return(dispatch) => {
-          dispatch(updateSelectedAccount(payload))
-     }
-}
 
 //dispatch loadAccounts
 export const dispatchFetchAccounts = () => {
@@ -60,8 +52,6 @@ export const dispatchFetchAccounts = () => {
 //dispatch sendCaseInfo
 export const dispatchCaseCreate = (payload) => {
 
-     console.log(payload);
-
      return (dispatch) => {
 
           let data = {
@@ -74,16 +64,12 @@ export const dispatchCaseCreate = (payload) => {
                SuppliedEmail: payload.SuppliedEmail
           }
 
-          console.log("this is the payload from dispatchCaseCreate" + JSON.stringify(data));
-
           const request = new Request('/api/createCase', {
                method: 'POST',
                body: JSON.stringify(data),
                headers:{'content-type': 'application/json'},
                credentials: 'include'
           });
-
-          console.log('This is the request from dispatchCaseCreate' + JSON.stringify(request));
 
           createCase(request)
           .then(caseNum => dispatch(sendCaseInfo(caseNum)))
@@ -101,8 +87,6 @@ export default (state = [], action) => {
       return {...state, caseNum: action.payload}
     case LOGGED_IN:
       return {...state, loggedIn: state.loggedIn += 1 }
-    case SELECTED_ACCOUNT:
-      return {...state, selectedAccount: action.payload}
     default:
       return state;
   }

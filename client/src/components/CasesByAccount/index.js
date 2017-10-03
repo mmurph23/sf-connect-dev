@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import {browserHistory} from 'react-router';
 import $ from 'jquery';
 import { bindActionCreators } from 'redux';
-import { dispatchFetchCasesByAccount, dispatchSelectedCase } from '../../reducers/casesReducer';
-import { dispatchSelectedAccount } from '../../reducers/stateReducer';
+import { dispatchFetchCasesByAccount, dispatchSelectedCase, dispatchLoadCaseInfoToForm, dispatchCaseToUpdate } from '../../reducers/casesReducer';
+import { dispatchSelectedAccount, dispatchSelectedAccountInfo } from '../../reducers/accountsReducer';
 import CaseListItem from './Components/CaseListItem'
 
 class CasesByAccount extends Component {
@@ -14,6 +14,20 @@ class CasesByAccount extends Component {
          this.props.dispatchFetchCasesByAccount();
        }
      }
+
+     componentWillUpdate(nextProps, nextState) {
+
+          if (nextProps.selectedAccount !== this.props.selectedAccount) {
+               this.props.dispatchSelectedAccountInfo(nextProps.selectedAccount)
+          }
+          if (nextProps.selectedCase !== this.props.selectedCase) {
+               this.props.dispatchCaseToUpdate(nextProps.selectedCase);
+          }
+
+
+
+     }
+
 
   render() {
 
@@ -68,14 +82,20 @@ class CasesByAccount extends Component {
 
 const mapStateToProps = state => ({
   casesByAccount: state.CASES.casesByAccount,
-  selectedAccount: state.STATE.selectedAccount,
-  selectedCase: state.CASES.selectedCase
+  selectedCase: state.CASES.selectedCase,
+  caseToUpdate: state.CASES.caseToUpdate,
+  selectedAccount: state.ACCOUNTS.selectedAccount,
+  initialValues: state.CASES.initialValues
+
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
      dispatchFetchCasesByAccount,
+     dispatchSelectedAccountInfo,
      dispatchSelectedAccount,
-     dispatchSelectedCase
+     dispatchSelectedCase,
+     dispatchLoadCaseInfoToForm,
+     dispatchCaseToUpdate
 }, dispatch);
 
 export default connect(

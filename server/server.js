@@ -159,7 +159,7 @@ app.get('/api/getCaseInfo', function(req, res){
        console.log("Name : " + account.Name);
        // ...
      });
-     console.log(c);
+     console.log(c)
 });
 
 
@@ -228,15 +228,18 @@ app.post('/api/accountInfo', function(req, res){
    });
 
    let p = req.body;
+   console.log(JSON.stringify(p));
    //assign site URL to variable
    let selectedAccount = p.selectedAccount;
+   console.log(selectedAccount);
    //parse request body to create case object for SF
    //set records array
    let recs = [];
    //set placeholder variable
    let x = '';
    //create query to return account Id
-   let q = "SELECT Name FROM Account WHERE Id =  '" + selectedAccount + "'";
+   let q = "SELECT Name, Account.owner.name, Phone, Website, BillingCity, BillingCountry, BillingPostalCode, BillingState, BillingStreet FROM Account WHERE Id = '" + selectedAccount + "'";
+   console.log(q);
 
    //set records array
     let records = [];
@@ -255,12 +258,13 @@ app.post('/api/accountInfo', function(req, res){
        .run({ autoFetch : true, maxFetch : 4000 });
 });
 
+
+
 //update a case
-app.post('/api/updateCase', function(req, res) {
+app.post('/api/caseToUpdate', function(req, res) {
      //jsforce function update(records, optionsopt, callbackopt)
      // if auth has not been set, redirect to index
      if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
-
 
      let conn = new jsforce.Connection({
          oauth2 : {oauth2},
@@ -268,25 +272,21 @@ app.post('/api/updateCase', function(req, res) {
          instanceUrl: req.session.instanceUrl
        });
 
-   //assign request body
-   let p = req.body;
-   //assign site URL to variable
-   let website = p.WebSite;
-   //parse request body to create case object for SF
-   let payload = {
-         AccountId: p.AccountId,
-         Origin: 'Web',
-         Subject: p.Subject,
-         Description: p.Description,
-         SuppliedName: p.SuppliedName,
-         SuppliedEmail: p.SuppliedEmail
-   }
-   //set records array
-   let recs = [];
-   //set placeholder variable
-   let x = '';
-   //create query to return account Id
-   let q = "SELECT Id FROM Account WHERE WebSite = '" + website + "'";
+     //assign request body
+     let p = req.body;
+     console.log(JSON.stringify(p));
+     let selectedCase = p.selectedCase;
+     console.log("Selected Case on the server side: " + selectedCase);
+
+     //set records array
+     let recs = [];
+     //set placeholder variable
+     conn.sobject("Case").retrieve(selectedCase, function(err, cs) {
+        if (err) { return console.error(err); }
+        recs.push(cs);
+        console.log("Case to update: " + JSON.stringify(recs));
+        res.json(recs);
+     });
 });
 
 // Always return the main index.html, so react-router render the route in the client

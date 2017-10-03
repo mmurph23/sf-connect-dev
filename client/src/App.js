@@ -26,7 +26,7 @@ class Layout extends Component {
   }
 
   render() {
-       
+
     return (
       <div className="container">
         <div className="navbar navbar-inverse">
