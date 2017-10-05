@@ -6,6 +6,7 @@ const CURRENT_CASE_INFO = "CURRENT_CASE_INFO";
 const SELECTED_CASE = "SELECTED_CASE";
 const CASE_TO_UPDATE = "CASE_TO_UPDATE";
 const LOAD_CASE_INFO_TO_FORM = "LOAD_CASE_INFO_TO_FORM";
+const LOAD_UPDATE_CONFIRM = "LOAD_UPDATE_CONFIRM";
 
 //Reducer Action
 export const loadCasesByAccount = (casesByAccount) => ({type: CASES_BY_ACCOUNT, payload: casesByAccount});
@@ -13,7 +14,7 @@ export const loadSelectedCase = (caseInfo) => ({type: CURRENT_CASE_INFO, payload
 export const updateSelectedCase = (caseId) => ({type: SELECTED_CASE, payload: caseId});
 export const loadCaseToUpdate = (caseInfo) => ({type: CASE_TO_UPDATE, payload: caseInfo});
 export const loadCaseInfoToForm = (formInfo) => ({type: LOAD_CASE_INFO_TO_FORM, payload: formInfo})
-
+export const loadUpdateConfirm = (confirmId) => ({type: LOAD_UPDATE_CONFIRM, payload: confirmId})
 //helper functions
 
 //get a list of accounts for the loadAccounts action
@@ -35,6 +36,12 @@ export const fetchCaseToUpdate = (request) => {
                .then(res => res.json())
 }
 
+export const pushUpdatedCase = (request) => {
+     console.log("pushing updated body: " + JSON.stringify(request.body));
+     return fetch(request)
+          .then(res => res.json())
+}
+
 //Action dispatch functions, links the fetch call to the the reducer action, which calls the reducer
 
 //load form edit info into edit case form
@@ -42,7 +49,7 @@ export const dispatchLoadCaseInfoToForm = () => {
      return (dispatch, getState) => {
           let state = getState();
           let caseInfo = state.CASES.caseToUpdate[0].CaseNumber;
-          console.log("This is the selected case info: " + caseInfo)
+          console.log("This is the selected case info from dispatchLoadCaseInfoToForm: " + caseInfo)
 
           let initialValues = {
                SuppliedName: state.CASES.caseToUpdate[0].CaseNumber,
@@ -61,13 +68,13 @@ export const dispatchSelectedCase = (payload) => {
      }
 }
 
-//dispatch update selected case
+//dispatch call to get the case info to update
 export const dispatchCaseToUpdate = (payload) => {
      return(dispatch, getState) => {
           /*let state = getState();
           console.log()
           let selectedCase = state.CASES.selectedCase;*/
-          console.log('selected case payload: ' + payload);
+          console.log('selected case payload from dispatchCaseToUpdate: ' + payload);
           let data = {
                selectedCase: payload,
           }
@@ -84,6 +91,32 @@ export const dispatchCaseToUpdate = (payload) => {
            .then(caseToUpdate => dispatch(loadCaseToUpdate(caseToUpdate)))
 
      }
+}
+
+//dispatch call to update selected case
+export const dispatchUpdateCase = (payload) => {
+          return (dispatch, getState) => {
+               let state = getState();
+               let CaseId = state.CASES.selectedCase;
+               let data = {
+                    CaseId: CaseId,
+                    Subject: payload.Subject,
+                    Description: payload.Description
+
+               }
+               console.log("This is the selected Account Id: " + CaseId);
+
+               console.log("This is the payload from dispatchUpdateCase: " + JSON.stringify(data))
+               const request = new Request('/api/updateCase', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers:{'content-type': 'application/json'},
+                    credentials: 'include'
+               });
+
+               pushUpdatedCase(request)
+               .then(confirmId => dispatch(loadUpdateConfirm(confirmId)))
+          }
 }
 
 //dispatch loadCasesByAccount
@@ -116,6 +149,8 @@ export default (state = [], action) => {
       return {...state, caseToUpdate: action.payload}
     case LOAD_CASE_INFO_TO_FORM:
       return {...state, initialValues: action.payload}
+    case LOAD_UPDATE_CONFIRM:
+      return {...state, confirmId: action.payload}
     default:
       return state;
   }

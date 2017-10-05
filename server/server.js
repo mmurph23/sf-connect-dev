@@ -260,7 +260,7 @@ app.post('/api/accountInfo', function(req, res){
 
 
 
-//update a case
+//get case to update
 app.post('/api/caseToUpdate', function(req, res) {
      //jsforce function update(records, optionsopt, callbackopt)
      // if auth has not been set, redirect to index
@@ -287,6 +287,44 @@ app.post('/api/caseToUpdate', function(req, res) {
         console.log("Case to update: " + JSON.stringify(recs));
         res.json(recs);
      });
+});
+
+
+//update case
+app.post('/api/updateCase', function(req, res) {
+
+        // if auth has not been set, redirect to index
+        if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+
+
+        let conn = new jsforce.Connection({
+            oauth2 : {oauth2},
+            accessToken: req.session.accessToken,
+            instanceUrl: req.session.instanceUrl
+          });
+
+       //assign request body
+       let p = req.body;
+
+       //parse request body to create case object for SF
+       let payload = {
+            Id: p.CaseId,
+            Subject: p.Subject,
+            Description: p.Description
+       }
+
+       console.log("This is the payload on the server: " + JSON.stringify(payload));
+       //set records array
+       let recs = [];
+
+       //set placeholder variable
+       conn.sobject("Case").update(payload, function(err, ret) {
+            if (err || !ret.success) { return console.error(err, ret); }
+            console.log('Updated Successfully : ' + ret.id);
+            recs.push(ret.id);
+            res.json(recs);
+            // ...
+       });
 });
 
 // Always return the main index.html, so react-router render the route in the client

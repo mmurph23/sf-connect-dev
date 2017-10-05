@@ -20,13 +20,22 @@ class CasesByAccount extends Component {
           if (nextProps.selectedAccount !== this.props.selectedAccount) {
                this.props.dispatchSelectedAccountInfo(nextProps.selectedAccount)
           }
+
+
           if (nextProps.selectedCase !== this.props.selectedCase) {
                this.props.dispatchCaseToUpdate(nextProps.selectedCase);
           }
 
+          if (this.props.caseToUpdate !== nextProps.caseToUpdate) {
+               this.props.dispatchLoadCaseInfoToForm();
+
+          }
+
+
 
 
      }
+
 
 
   render() {

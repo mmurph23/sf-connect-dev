@@ -17,13 +17,11 @@ class AccountInfo extends Component {
        }
      }
 
-     componentWillUpdate(nextProps, nextState) {
-          console.log(nextProps.selectedCase);
-          console.log(this.props.selectedCase);
+     /*   componentWillUpdate(nextProps, nextState) {
           if (nextProps.selectedCase !== this.props.selectedCase) {
          this.props.dispatchCaseToUpdate(nextProps.selectedCase);
        }
-     }
+     } */
 
   render() {
 

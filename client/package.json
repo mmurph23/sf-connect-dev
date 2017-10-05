@@ -39,6 +39,9 @@
     },
     "/api/caseToUpdate": {
       "target": "http://localhost:3030"
+    },
+    "/api/updateCase": {
+       "target": "http://localhost:3030"  
     }
   },
   "devDependencies": {
