@@ -22,10 +22,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //jsForce connection
 const oauth2 = new jsforce.OAuth2({
     // you can change loginUrl to connect to sandbox or prerelease env.
-    loginUrl : 'https://bspoke-dev-ed.my.salesforce.com',
+    loginUrl : 'https://your-unique-url.my.salesforce.com',
     //clientId and Secret will be provided when you create a new connected app in your SF developer account
-    clientId : '3MVG9szVa2RxsqBZjh_k.RvJXDUONto6617zQuwcaGLwh_E8jSnT2Vw8u1Trf3.gqNNP44UmnGDdDDtSQDhGs',
-    clientSecret : '73500702797681914',
+    clientId : 'placeholder',
+    clientSecret : 'placeholder',
     //redirectUri : 'http://localhost:' + port +'/token'
     redirectUri : 'http://localhost:3030/token'
 });
